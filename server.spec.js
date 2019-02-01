@@ -78,29 +78,4 @@ describe("server.js", () => {
     let response = await request(server).get("/games");
     expect(response.body).toEqual([requestBody]);
   });
-  //   it("POST should return number representing id", async () => {
-  //     let response = await request(server)
-  //       .post("/")
-  //       .send({ name: "Lumber" });
-
-  //     expect(typeof response.body).toBe("number");
-  //   });
-  //   it("DELETE should respond with status 200", async () => {
-  //     await request(server)
-  //       .post("/")
-  //       .send({ name: "Lumber" });
-  //     let response = await request(server)
-  //       .delete("/")
-  //       .send({ name: "Lumber" });
-  //     expect(response.status).toBe(200);
-  //   });
-  //   it("DELETE should remove 1 resource", async () => {
-  //     await request(server)
-  //       .post("/")
-  //       .send({ name: "Lumber" });
-  //     let response = await request(server)
-  //       .delete("/")
-  //       .send({ name: "Lumber" });
-  //     expect(response.body).toBe(1);
-  //   });
 });
