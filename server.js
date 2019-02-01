@@ -7,7 +7,8 @@ var dataSet = [];
 function clearDataSet() {
   dataSet = [];
 }
-// defined middleware for routes
+
+// defined middleware for routes--------
 function checkBody(req, res, next) {
   let game = req.body;
   if (game.title && game.genre && game.releaseYear) {
@@ -34,6 +35,8 @@ function createID(req, res, next) {
   req.body.id = dataSet.length + 1;
   next();
 }
+//------end middleware definitions-------
+
 //routes
 server.get("/", async (req, res) => {
   res.status(200).send("hi there");
@@ -46,6 +49,15 @@ server.post("/games", checkBody, validateUniqueTitle, createID, (req, res) => {
 
 server.get("/games", (req, res) => {
   res.status(200).json(dataSet);
+});
+
+server.get("/games/:id", (req, res) => {
+  for (let i = 0; i < dataSet.length; i++) {
+    if (dataSet[i].id === Number(req.params.id)) {
+      res.status(200).json(dataSet[i]);
+    }
+  }
+  res.status(404).json({ message: "id not found", dataSet });
 });
 
 module.exports = { server, clearDataSet };

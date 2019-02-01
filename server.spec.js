@@ -105,4 +105,26 @@ describe("server.js", () => {
       expect(response.body).toEqual([requestBody]);
     });
   });
+  describe("(stretch) GET by ID", () => {
+    it("should get game of requested ID", async () => {
+      await request(server)
+        .post("/games")
+        .send({ title: "PacMan", genre: "Arcade", releaseYear: "1985" });
+      await request(server)
+        .post("/games")
+        .send({ title: "Miss Pacman", genre: "Arcade", releaseYear: "1985" });
+
+      let response = await request(server).get("/games/2");
+      expect(response.body.id).toBe(2);
+    });
+    it("should return 404 for ID that doesnt exist", async () => {
+      await request(server)
+        .post("/games")
+        .send({ title: "PacMan", genre: "Arcade", releaseYear: "1985" });
+
+      let response = await request(server).get("/games/5");
+
+      expect(response.status).toBe(404);
+    });
+  });
 });
