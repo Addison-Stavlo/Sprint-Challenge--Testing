@@ -1,12 +1,12 @@
 const request = require("supertest");
-const server = require("./server.js");
+const { server, clearDataSet } = require("./server.js");
 
 // const db = require("../dbConfig");
 
 // // before and after Each or before and after All
-// afterEach(async () => {
-//   await db("resources").truncate();
-// });
+afterEach(async () => {
+  clearDataSet();
+});
 
 describe("server.js", () => {
   it("GET should respond with status 200", async () => {
@@ -21,7 +21,7 @@ describe("server.js", () => {
 
     expect(response.status).toBe(201);
   });
-  it("POST failure if body missing info", async () => {
+  it("POST failure if body missing info gives 422", async () => {
     //missing releaseYear
     let response = await request(server)
       .post("/games")
@@ -48,6 +48,25 @@ describe("server.js", () => {
       .send(requestBody);
 
     expect(response.body.dataSet.pop()).toEqual(requestBody);
+  });
+  it("GET returns 200", async () => {
+    let response = await request(server).get("/games");
+
+    expect(response.status).toBe(200);
+  });
+  it("GET returns array", async () => {
+    let response = await request(server).get("/games");
+
+    expect(response.body).toEqual([]);
+  });
+  it("GET returns recently added item", async () => {
+    let requestBody = { title: "PacMan", genre: "Arcade", releaseYear: "1985" };
+    await request(server)
+      .post("/games")
+      .send(requestBody);
+
+    let response = await request(server).get("/games");
+    expect(response.body).toEqual([requestBody]);
   });
   //   it("POST should return number representing id", async () => {
   //     let response = await request(server)
