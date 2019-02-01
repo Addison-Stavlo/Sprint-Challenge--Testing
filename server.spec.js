@@ -49,6 +49,16 @@ describe("server.js", () => {
 
     expect(response.body.dataSet.pop()).toEqual(requestBody);
   });
+  it("(stretch) POST should check for unique title", async () => {
+    let requestBody = { title: "PacMan", genre: "Arcade", releaseYear: "1985" };
+    await request(server)
+      .post("/games")
+      .send(requestBody);
+    let response = await request(server)
+      .post("/games")
+      .send(requestBody);
+    expect(response.status).toBe(405);
+  });
   it("GET returns 200", async () => {
     let response = await request(server).get("/games");
 
