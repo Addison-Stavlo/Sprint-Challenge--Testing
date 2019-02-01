@@ -29,12 +29,17 @@ function validateUniqueTitle(req, res, next) {
   }
   next();
 }
+
+function createID(req, res, next) {
+  req.body.id = dataSet.length + 1;
+  next();
+}
 //routes
 server.get("/", async (req, res) => {
   res.status(200).send("hi there");
 });
 
-server.post("/games", checkBody, validateUniqueTitle, (req, res) => {
+server.post("/games", checkBody, validateUniqueTitle, createID, (req, res) => {
   dataSet.push(req.body);
   res.status(201).json({ dataSet });
 });
